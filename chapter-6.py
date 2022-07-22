@@ -15,6 +15,7 @@ data_to_learn = np.array([
 
 outputs_to_learn = np.array([0, 1, 0], dtype=np.float32)
 
+np.random.seed(1)
 weights = np.random.rand(3, 1)
 
 alpha = 0.1
