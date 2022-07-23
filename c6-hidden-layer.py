@@ -13,21 +13,19 @@ outputs_to_learn = np.array([1, 1, 0, 0], dtype=np.float32)
 alpha = 0.2
 
 np.random.seed(1)
-hidden_size = 4
-weights = [np.random.rand(3, hidden_size) * 2 - 1, np.random.rand(hidden_size, 1) * 2 - 1]
+HIDDEN_SIZE = 4
+weights = [np.random.rand(3, HIDDEN_SIZE) * 2 - 1, np.random.rand(HIDDEN_SIZE, 1) * 2 - 1]
 
 
-def relu(x):
-    return (x > 0) * x
+def relu(x): return (x > 0) * x
 
-def relu_deriv(x):
-    return x > 0
+def relu_deriv(x): return x > 0
 
+def nn(data, weights):
+    N = len(weights) + 1
+    layers = [None] * N
 
-def nn(data, *weights):
-    def relu(x): return (x > 0) * x
-    layers = [data] + [None] * len(weights)
-
+    layers[0] = data
     layers[1] = relu(np.dot(layers[0], weights[0]))
     layers[2] = np.dot(layers[1], weights[1])
 
@@ -38,7 +36,7 @@ for i in range(60):
         data = data_to_learn[j].reshape(1, 3)
         expect = outputs_to_learn[j].reshape(1, 1)
 
-        layers = nn(data, *weights)
+        layers = nn(data=data, weights=weights)
 
         layer_2_delta = (expect - layers[2])
         layer_1_delta = np.dot(layer_2_delta, weights[1].T) * relu_deriv(layers[1])
